@@ -1,0 +1,11 @@
+[mcp_servers.godotiq]
+command = "uvx"
+args = ["godotiq"]
+cwd = "/Users/franciscomanfredi/Documents/Codigos/godot-games/survivors/survivors"
+
+[mcp_servers.godotiq.env]
+GODOTIQ_PROJECT_ROOT = "/Users/franciscomanfredi/Documents/Codigos/godot-games/survivors/survivors"
+PYTHONUTF8 = "1"
+
+[mcp_servers.godotiq.tools.godotiq_file_ops]
+approval_mode = "approve"

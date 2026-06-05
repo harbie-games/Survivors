@@ -1,0 +1,243 @@
+[gd_scene format=3 uid="uid://b7f5q77rvbu03"]
+
+[ext_resource type="PackedScene" uid="uid://ctlg31n6ghxm5" path="res://scenes/player.tscn" id="1_player"]
+[ext_resource type="Script" uid="uid://d312m2qelmefb" path="res://scripts/touch_joystick.gd" id="2_joystick"]
+[ext_resource type="Texture2D" uid="uid://gt4xk8mb2v1c" path="res://assets/backgrounds/grass_tile_kenney.png" id="3_background"]
+[ext_resource type="Script" uid="uid://bj5v4v2nfen0m" path="res://scripts/background_chunks.gd" id="4_chunks"]
+[ext_resource type="Script" uid="uid://c4u6jkkqp3ujw" path="res://scripts/enemy_spawner.gd" id="5_spawner"]
+[ext_resource type="PackedScene" uid="uid://d4g4l2avnig65" path="res://scenes/orc_enemy.tscn" id="6_orc"]
+[ext_resource type="Script" uid="uid://ujkseggvjioi" path="res://scripts/game_ui.gd" id="7_game_ui"]
+[ext_resource type="PackedScene" path="res://scenes/arrow_projectile.tscn" id="8_arrow"]
+[ext_resource type="PackedScene" uid="uid://ber4y2r46545x" path="res://scenes/xp_orb.tscn" id="9_xp_orb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_base"]
+bg_color = Color(0.08, 0.1, 0.14, 0.42)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 72
+corner_radius_top_right = 72
+corner_radius_bottom_right = 72
+corner_radius_bottom_left = 72
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knob"]
+bg_color = Color(0.86, 0.92, 1, 0.82)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[node name="Main" type="Node2D" unique_id=501279926]
+
+[node name="BackgroundChunks" type="Node2D" parent="." unique_id=1779928823]
+z_index = -100
+script = ExtResource("4_chunks")
+target_path = NodePath("../Player")
+grass_texture = ExtResource("3_background")
+
+[node name="Player" parent="." unique_id=930116046 instance=ExtResource("1_player")]
+fire_interval = 1.5
+projectile_damage = 2.5
+auto_aim_range = 500.0
+projectile_scene = ExtResource("8_arrow")
+enemies_path = NodePath("../Enemies")
+projectile_parent_path = NodePath("../Projectiles")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=2025135667]
+position_smoothing_enabled = true
+
+[node name="Enemies" type="Node2D" parent="." unique_id=88060675]
+
+[node name="Projectiles" type="Node2D" parent="." unique_id=870549002]
+
+[node name="XpDrops" type="Node2D" parent="." unique_id=1154789594]
+
+[node name="EnemySpawner" type="Node2D" parent="." unique_id=1453075710]
+script = ExtResource("5_spawner")
+enemy_scene = ExtResource("6_orc")
+target_path = NodePath("../Player")
+spawn_margin = 180.0
+spawn_parent_path = NodePath("../Enemies")
+xp_drop_scene = ExtResource("9_xp_orb")
+xp_drop_parent_path = NodePath("../XpDrops")
+
+[node name="JoystickLayer" type="CanvasLayer" parent="." unique_id=1880158446]
+
+[node name="TouchJoystick" type="Control" parent="JoystickLayer" unique_id=189125757]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_joystick")
+
+[node name="Base" type="Panel" parent="JoystickLayer/TouchJoystick" unique_id=666306589]
+layout_mode = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_base")
+
+[node name="Knob" type="Panel" parent="JoystickLayer/TouchJoystick" unique_id=1109989401]
+layout_mode = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_knob")
+
+[node name="GameUI" type="CanvasLayer" parent="." unique_id=1003193696]
+script = ExtResource("7_game_ui")
+player_path = NodePath("../Player")
+enemy_spawner_path = NodePath("../EnemySpawner")
+enemies_path = NodePath("../Enemies")
+projectiles_path = NodePath("../Projectiles")
+xp_drops_path = NodePath("../XpDrops")
+
+[node name="HUD" type="Control" parent="GameUI" unique_id=704057522]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="XpBar" type="ColorRect" parent="GameUI/HUD" unique_id=389092400]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -68.0
+offset_right = 210.0
+offset_bottom = -52.0
+color = Color(0.06, 0.12, 0.18, 1)
+
+[node name="Fill" type="ColorRect" parent="GameUI/HUD/XpBar" unique_id=1117633632]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 0
+offset_bottom = 16.0
+color = Color(0.2, 0.82, 1, 1)
+
+[node name="LevelLabel" type="Label" parent="GameUI/HUD/XpBar" unique_id=1570603357]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -2.0
+offset_right = 92.0
+offset_bottom = 18.0
+theme_override_font_sizes/font_size = 14
+text = "LV 0"
+
+[node name="HealthBar" type="ColorRect" parent="GameUI/HUD" unique_id=719541126]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -42.0
+offset_right = 210.0
+offset_bottom = -24.0
+color = Color(0, 0, 0, 1)
+
+[node name="Fill" type="ColorRect" parent="GameUI/HUD/HealthBar" unique_id=54129537]
+custom_minimum_size = Vector2(420, 18)
+layout_mode = 0
+offset_right = 420.0
+offset_bottom = 18.0
+color = Color(0.9, 0.02, 0.02, 1)
+
+[node name="StartScreen" type="Control" parent="GameUI" unique_id=698594565]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="GameUI/StartScreen" unique_id=267846020]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -170.0
+offset_top = -80.0
+offset_right = 170.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/StartScreen/Panel" unique_id=338168543]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 22.0
+offset_right = -24.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="GameUI/StartScreen/Panel/VBoxContainer" unique_id=153043286]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "SURVIVORS"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="GameUI/StartScreen/Panel/VBoxContainer" unique_id=629428395]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "START"
+
+[node name="GameOverScreen" type="Control" parent="GameUI" unique_id=2039293092]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="GameUI/GameOverScreen" unique_id=250160627]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -90.0
+offset_right = 190.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/GameOverScreen/Panel" unique_id=916947175]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="GameUI/GameOverScreen/Panel/VBoxContainer" unique_id=1292031757]
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="GameUI/GameOverScreen/Panel/VBoxContainer" unique_id=1398440159]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "RESTART"
+
+[connection signal="direction_changed" from="JoystickLayer/TouchJoystick" to="Player" method="set_move_vector"]

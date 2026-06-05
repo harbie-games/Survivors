@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://ber4y2r46545x"]
+
+[ext_resource type="Script" uid="uid://rjjtlimrf1hd" path="res://scripts/xp_orb.gd" id="1_script"]
+
+[node name="XpOrb" type="Node2D" unique_id=569596889]
+script = ExtResource("1_script")
+
+[node name="Body" type="Polygon2D" parent="." unique_id=2035134389]
+position = Vector2(-2.3841858e-07, 0)
+scale = Vector2(0.46875, 0.453125)
+polygon = PackedVector2Array(16, 0, 14.7821, 6.12293, 11.3137, 11.3137, 6.12293, 14.7821, 0, 16, -6.12293, 14.7821, -11.3137, 11.3137, -14.7821, 6.12293, -16, 0, -14.7821, -6.12293, -11.3137, -11.3137, -6.12293, -14.7821, 0, -16, 6.12293, -14.7821, 11.3137, -11.3137, 14.7821, -6.12293)
+
+[node name="Sparkle" type="Node2D" parent="." unique_id=319939686]
+
+[node name="Horizontal" type="Line2D" parent="Sparkle" unique_id=710152371]
+scale = Vector2(0.5, 1)
+points = PackedVector2Array(-9, 0, 9, 0, 9, 0)
+width = 2.0
+default_color = Color(0.75, 0.95, 1, 0.9)
+
+[node name="Vertical" type="Line2D" parent="Sparkle" unique_id=1448752039]
+scale = Vector2(1, 0.47727275)
+points = PackedVector2Array(0, -9, 0, 9)
+width = 2.0
+default_color = Color(0.75, 0.95, 1, 0.9)
