@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://d312m2qelmefb" path="res://scripts/touch_joystick.gd" id="2_joystick"]
 [ext_resource type="Texture2D" uid="uid://gt4xk8mb2v1c" path="res://assets/backgrounds/grass_tile_kenney.png" id="3_background"]
 [ext_resource type="Script" uid="uid://bj5v4v2nfen0m" path="res://scripts/background_chunks.gd" id="4_chunks"]
+[ext_resource type="PackedScene" uid="uid://c75yxhjqciono" path="res://scenes/weapons/Saw.tscn" id="5_eb6dy"]
 [ext_resource type="Script" uid="uid://c4u6jkkqp3ujw" path="res://scripts/enemy_spawner.gd" id="5_spawner"]
 [ext_resource type="PackedScene" uid="uid://d4g4l2avnig65" path="res://scenes/orc_enemy.tscn" id="6_orc"]
 [ext_resource type="Script" uid="uid://ujkseggvjioi" path="res://scripts/game_ui.gd" id="7_game_ui"]
@@ -40,12 +41,11 @@ target_path = NodePath("../Player")
 grass_texture = ExtResource("3_background")
 
 [node name="Player" parent="." unique_id=930116046 instance=ExtResource("1_player")]
-fire_interval = 1.5
-projectile_damage = 2.5
-auto_aim_range = 350.0
 projectile_scene = ExtResource("8_arrow")
+saw_scene = ExtResource("5_eb6dy")
 enemies_path = NodePath("../Enemies")
 projectile_parent_path = NodePath("../Projectiles")
+auto_aim_range = 350.0
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=2025135667]
 position_smoothing_enabled = true

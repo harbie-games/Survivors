@@ -52,7 +52,7 @@ var upgrade_levels := {
 }
 var melee_damage: float = 15.0
 var melee_cooldown: float = 0.8
-var melee_range: float = 70.0
+var melee_range: float = 106.0
 var melee_arc_angle: float = PI
 var projectile_damage: float = 5.0
 var fire_interval: float = 1.0
@@ -243,7 +243,7 @@ func import_save_data(data: Dictionary) -> void:
 	fire_interval = float(data.get("fire_interval", 1.0))
 	projectile_damage = float(data.get("projectile_damage", 5.0))
 	melee_damage = float(data.get("melee_damage", 15.0))
-	melee_range = float(data.get("melee_range", 70.0))
+	melee_range = float(data.get("melee_range", 106.0))
 	saw_damage = float(data.get("saw_damage", 10.0))
 	saw_size_multiplier = float(data.get("saw_size_multiplier", 1.0))
 	saw_orbit_radius = float(data.get("saw_orbit_radius", 90.0))
@@ -271,7 +271,7 @@ func reset_run_state() -> void:
 	speed = 260.0
 	pickup_radius = 120.0
 	melee_damage = 15.0
-	melee_range = 70.0
+	melee_range = 106.0
 	fire_interval = 1.0
 	projectile_damage = 5.0
 	saw_damage = 10.0
