@@ -25,6 +25,9 @@ func setup(start_position: Vector2, move_direction: Vector2, hit_damage: float) 
 	rotation = direction.angle()
 
 func _on_body_entered(body: Node) -> void:
-	if body.has_method("apply_damage"):
-		body.call("apply_damage", damage)
+	if not body.has_method("apply_damage"):
+		return
+	if body.has_method("is_dead") and body.call("is_dead"):
+		return
+	body.call("apply_damage", damage, self)
 	queue_free()

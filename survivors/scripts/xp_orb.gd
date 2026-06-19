@@ -24,10 +24,13 @@ func _process(delta: float) -> void:
 		return
 	var offset := _player.global_position - global_position
 	var distance := offset.length()
+	var active_magnet_distance := magnet_distance
+	if "pickup_radius" in _player:
+		active_magnet_distance = float(_player.get("pickup_radius"))
 	if distance <= collect_distance:
 		if _player.has_method("collect_xp"):
 			_player.call("collect_xp", value)
 		queue_free()
 		return
-	if distance <= magnet_distance and distance > 0.0:
+	if distance <= active_magnet_distance and distance > 0.0:
 		global_position += offset.normalized() * magnet_speed * delta

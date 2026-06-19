@@ -4,6 +4,7 @@
 
 [node name="XpOrb" type="Node2D" unique_id=569596889]
 script = ExtResource("1_script")
+magnet_speed = 330.0
 
 [node name="Body" type="Polygon2D" parent="." unique_id=2035134389]
 position = Vector2(-2.3841858e-07, 0)
