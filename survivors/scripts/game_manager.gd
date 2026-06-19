@@ -16,12 +16,20 @@ var state: StringName = STATE_MENU
 var elapsed_time: float = 0.0
 var kills: int = 0
 var current_wave: int = 0
+var resume_saved_run: bool = false
+
+func request_new_run() -> void:
+	resume_saved_run = false
+
+func request_resume_saved_run() -> void:
+	resume_saved_run = true
 
 func _process(delta: float) -> void:
 	if state == STATE_PLAYING:
 		elapsed_time += delta
 
 func start_run() -> void:
+	resume_saved_run = false
 	elapsed_time = 0.0
 	kills = 0
 	current_wave = 0

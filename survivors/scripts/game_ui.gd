@@ -71,7 +71,7 @@ func _ready() -> void:
 	_option_buttons = [option_button_1, option_button_2, option_button_3]
 	_connect_ui()
 	_connect_gameplay()
-	call_deferred("_start_new_gameplay_run")
+	call_deferred("_enter_gameplay_from_menu")
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
@@ -167,9 +167,16 @@ func _on_start_pressed() -> void:
 	AudioManager.play_sfx("ui_click")
 	_start_new_gameplay_run()
 
+func _enter_gameplay_from_menu() -> void:
+	if bool(GameManager.get("resume_saved_run")) and _has_save_game():
+		_continue_saved_gameplay_run()
+	else:
+		_start_new_gameplay_run()
+
 func _start_new_gameplay_run() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().paused = false
+	GameManager.set("resume_saved_run", false)
 	_clear_save_game()
 	_clear_world()
 	_reset_player()
@@ -178,6 +185,19 @@ func _start_new_gameplay_run() -> void:
 	_show_gameplay()
 	if _wave_manager != null:
 		_wave_manager.call_deferred("start_run")
+
+func _continue_saved_gameplay_run() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().paused = false
+	GameManager.set("resume_saved_run", false)
+	_clear_world()
+	if not _load_game():
+		_start_new_gameplay_run()
+		return
+	GameManager.set_state(GameManager.STATE_PLAYING)
+	AudioManager.play_gameplay_music()
+	_show_gameplay()
+	_update_bars()
 
 func _on_continue_pressed() -> void:
 	AudioManager.play_sfx("ui_click")
@@ -207,6 +227,8 @@ func _on_resume_pressed() -> void:
 	GameManager.set_state(GameManager.STATE_PLAYING)
 
 func _save_and_return_to_menu() -> void:
+	if GameManager.state in [GameManager.STATE_PLAYING, GameManager.STATE_PAUSED, GameManager.STATE_LEVEL_UP]:
+		_save_game()
 	_exit_to_main_menu()
 
 func _on_quit_pressed() -> void:
